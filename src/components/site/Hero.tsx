@@ -42,7 +42,7 @@ export function Hero() {
   return (
     <section
       id="top"
-      className="relative isolate overflow-hidden pt-32 pb-40 md:pt-40 md:pb-56 min-h-[100svh]"
+      className="relative isolate overflow-hidden pt-24 pb-16 sm:pt-28 sm:pb-24 md:pt-36 md:pb-40 min-h-[85svh] md:min-h-[100svh]"
     >
       {/* Backgrounds — crossfade */}
       <div className="absolute inset-0 -z-20">
