@@ -176,7 +176,6 @@ export function Hero() {
           </div>
         </div>
       </div>
-      </div>
 
       <style>{`
         @keyframes heroZoom {
