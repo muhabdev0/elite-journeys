@@ -5,6 +5,7 @@ import { StatsStrip } from "@/components/site/StatsStrip";
 import { Services } from "@/components/site/Services";
 import { Destinations } from "@/components/site/Destinations";
 import { Footer } from "@/components/site/Footer";
+import { WhatsAppFloat } from "@/components/site/WhatsAppFloat";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -37,6 +38,7 @@ function Index() {
         <Destinations />
       </main>
       <Footer />
+      <WhatsAppFloat />
     </div>
   );
 }
