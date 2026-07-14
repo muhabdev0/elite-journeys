@@ -11,6 +11,7 @@ export const translations = {
       home: "الرئيسية",
       services: "خدماتنا",
       tours: "الجولات",
+      blog: "المدونة",
       about: "عن الشركة",
       contact: "اتصل بنا",
     },
