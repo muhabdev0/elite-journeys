@@ -1,25 +1,29 @@
 import { useEffect, useState } from "react";
 import { Globe, Menu, X } from "lucide-react";
+import { Link, useRouterState } from "@tanstack/react-router";
 import { Logo } from "./Logo";
 import { useLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
-const sections = ["home", "services", "tours", "about", "contact"] as const;
+const sections = ["home", "services", "tours", "blog", "about", "contact"] as const;
 type SectionKey = (typeof sections)[number];
 
-const sectionHrefs: Record<SectionKey, string> = {
-  home: "#top",
-  services: "#services",
-  tours: "#destinations",
-  about: "#about",
-  contact: "#contact",
+const sectionHrefs: Record<Exclude<SectionKey, "blog">, string> = {
+  home: "/#top",
+  services: "/#services",
+  tours: "/#destinations",
+  about: "/#about",
+  contact: "/#contact",
 };
 
-export function Header() {
+export function Header({ solid = false }: { solid?: boolean }) {
   const { t, lang, toggle } = useLang();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState<SectionKey>("home");
+
+  const forceSolid = solid || pathname !== "/";
+  const blogActive = pathname.startsWith("/blog");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -28,12 +32,14 @@ export function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const showSolid = scrolled || forceSolid;
+
   return (
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-        scrolled
-          ? "bg-navy/85 backdrop-blur-md shadow-elegant"
+        showSolid
+          ? "bg-navy/90 backdrop-blur-md shadow-elegant"
           : "bg-gradient-to-b from-black/40 to-transparent"
       )}
     >
@@ -48,26 +54,36 @@ export function Header() {
         </button>
 
         <nav className="hidden md:flex items-center gap-8 text-sm">
-          {sections.map((key) => (
-            <a
-              key={key}
-              href={sectionHrefs[key]}
-              onClick={() => setActive(key)}
-              className={cn(
-                "relative py-1 font-medium text-white/85 transition hover:text-primary",
-                active === key && "text-primary"
-              )}
-            >
-              {t.nav[key]}
-              {active === key && (
-                <span className="absolute -bottom-1 left-1/2 h-0.5 w-6 -translate-x-1/2 rounded-full bg-primary" />
-              )}
-            </a>
-          ))}
+          {sections.map((key) => {
+            const isBlog = key === "blog";
+            const isActive = isBlog ? blogActive : false;
+            const className = cn(
+              "relative py-1 font-medium text-white/85 transition hover:text-primary",
+              isActive && "text-primary"
+            );
+            return isBlog ? (
+              <Link key={key} to="/blog" className={className}>
+                {t.nav.blog}
+                {isActive && (
+                  <span className="absolute -bottom-1 left-1/2 h-0.5 w-6 -translate-x-1/2 rounded-full bg-primary" />
+                )}
+              </Link>
+            ) : (
+              <a
+                key={key}
+                href={sectionHrefs[key as Exclude<SectionKey, "blog">]}
+                className={className}
+              >
+                {t.nav[key]}
+              </a>
+            );
+          })}
         </nav>
 
         <div className="flex items-center gap-3">
-          <Logo />
+          <Link to="/" aria-label="ALASWANI Home">
+            <Logo />
+          </Link>
         </div>
 
         <button
@@ -84,23 +100,34 @@ export function Header() {
       <div
         className={cn(
           "md:hidden overflow-hidden transition-[max-height,opacity] duration-300 ease-out bg-navy/95 backdrop-blur-md",
-          open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+          open ? "max-h-[28rem] opacity-100" : "max-h-0 opacity-0"
         )}
       >
         <nav className="flex flex-col gap-1 px-6 py-4">
-          {sections.map((key) => (
-            <a
-              key={key}
-              href={sectionHrefs[key]}
-              onClick={() => {
-                setActive(key);
-                setOpen(false);
-              }}
-              className="rounded-lg px-3 py-3 text-base font-medium text-white/90 transition hover:bg-white/5 hover:text-primary"
-            >
-              {t.nav[key]}
-            </a>
-          ))}
+          {sections.map((key) => {
+            const isBlog = key === "blog";
+            const className =
+              "rounded-lg px-3 py-3 text-base font-medium text-white/90 transition hover:bg-white/5 hover:text-primary";
+            return isBlog ? (
+              <Link
+                key={key}
+                to="/blog"
+                onClick={() => setOpen(false)}
+                className={className}
+              >
+                {t.nav.blog}
+              </Link>
+            ) : (
+              <a
+                key={key}
+                href={sectionHrefs[key as Exclude<SectionKey, "blog">]}
+                onClick={() => setOpen(false)}
+                className={className}
+              >
+                {t.nav[key]}
+              </a>
+            );
+          })}
           <button
             onClick={() => {
               toggle();
@@ -112,7 +139,6 @@ export function Header() {
           </button>
         </nav>
       </div>
-      {/* Suppress unused-var warning when lang changes trigger re-render */}
       <span className="sr-only">{lang}</span>
     </header>
   );

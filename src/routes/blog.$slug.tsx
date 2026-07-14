@@ -3,7 +3,7 @@ import { ArrowLeft, ArrowRight, CalendarDays, UserRound, Tag } from "lucide-reac
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { WhatsAppFloat } from "@/components/site/WhatsAppFloat";
-import { getPost, posts } from "@/lib/blog-data";
+import { getPost, posts, type BlogPost } from "@/lib/blog-data";
 import { useLang } from "@/lib/i18n";
 
 export const Route = createFileRoute("/blog/$slug")({
@@ -113,7 +113,7 @@ function BlogPostPage() {
 
           <section className="mx-auto max-w-3xl px-5 py-12 md:px-8 md:py-20">
             <div className="space-y-6 text-base leading-[1.9] text-foreground/90 md:text-lg">
-              {post.content.map((block, i) => {
+              {post.content.map((block: BlogPost["content"][number], i: number) => {
                 if (block.type === "p") {
                   return <p key={i}>{block[lang]}</p>;
                 }
@@ -134,7 +134,7 @@ function BlogPostPage() {
                 if (block.type === "ul") {
                   return (
                     <ul key={i} className="list-disc space-y-2 ps-6 marker:text-primary">
-                      {block[lang].map((item, j) => (
+                      {block[lang].map((item: string, j: number) => (
                         <li key={j}>{item}</li>
                       ))}
                     </ul>
