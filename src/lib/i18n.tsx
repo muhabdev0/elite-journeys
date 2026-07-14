@@ -11,6 +11,7 @@ export const translations = {
       home: "الرئيسية",
       services: "خدماتنا",
       tours: "الجولات",
+      blog: "المدونة",
       about: "عن الشركة",
       contact: "اتصل بنا",
     },
@@ -70,6 +71,15 @@ export const translations = {
       follow: "تابعنا",
       rights: "جميع الحقوق محفوظة",
     },
+    blog: {
+      eyebrow: "المدونة",
+      title: "أحدث المقالات والأدلة",
+      subtitle:
+        "نصائح مختارة، أدلة وجهات، وقصص من طرقات أوروبا لنساعدك في تخطيط رحلة لا تُنسى.",
+      readMore: "اقرأ المزيد",
+      back: "العودة إلى المدونة",
+      related: "مقالات ذات صلة",
+    },
   },
   en: {
     dir: "ltr" as const,
@@ -77,6 +87,7 @@ export const translations = {
       home: "Home",
       services: "Services",
       tours: "Tours",
+      blog: "Blog",
       about: "About",
       contact: "Contact",
     },
@@ -135,6 +146,15 @@ export const translations = {
       support: "Reach us 24/7",
       follow: "Follow us",
       rights: "All rights reserved",
+    },
+    blog: {
+      eyebrow: "THE BLOG",
+      title: "Latest Articles & Guides",
+      subtitle:
+        "Curated tips, destination guides, and stories from the roads of Europe to help you plan an unforgettable trip.",
+      readMore: "Read more",
+      back: "Back to Blog",
+      related: "Related articles",
     },
   },
 } as const;
