@@ -1,5 +1,8 @@
-import { initializeApp } from "firebase/app";
+
 import { getFirestore } from "firebase/firestore";
+import { initializeApp } from "firebase/app";
+// 1. Import initializeFirestore instead of getFirestore
+import { initializeFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyD_KhwpVn0eoTyHIRUl5pV4MTJV2pxQglA",
@@ -12,4 +15,11 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
+
+
+
+// 2. FIX: Force Firestore to use standard HTTP long-polling.
+// This prevents Vercel serverless containers from hanging on database calls!
+export const db = initializeFirestore(app, {
+  experimentalForceLongPolling: true,
+});
