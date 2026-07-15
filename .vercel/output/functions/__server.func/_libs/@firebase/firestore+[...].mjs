@@ -1,5 +1,5 @@
 import { a as __toCommonJS, i as __require, n as __esmMin, o as __toESM, r as __exportAll, t as __commonJSMin } from "../../_runtime.mjs";
-import { _ as isCloudWorkstation, a as getApp, b as globalthis_default, c as LogLevel, d as FirebaseError, f as createMockUserToken, g as getUA, h as getModularInstance, i as _registerComponent, l as Logger, m as getDefaultEmulatorHostnameAndPort, n as _getProvider, p as deepEqual, r as _isFirebaseServerApp, s as registerVersion, t as SDK_VERSION$1, u as Component, v as isSafari, x as init_globalthis, y as pingServer } from "./app+[...].mjs";
+import { S as init_globalthis, _ as getUA, a as getApp, b as pingServer, c as registerVersion, d as Component, f as FirebaseError, g as getModularInstance, h as getDefaultEmulatorHostnameAndPort, i as _registerComponent, l as LogLevel, m as deepEqual, n as _getProvider, p as createMockUserToken, r as _isFirebaseServerApp, t as SDK_VERSION$1, u as Logger, v as isCloudWorkstation, x as globalthis_default, y as isSafari } from "./app+[...].mjs";
 import { Buffer } from "node:buffer";
 import { setImmediate } from "node:timers";
 import process from "node:process";
@@ -73499,6 +73499,34 @@ var Firestore = class extends Firestore$1 {
 		}
 	}
 };
+/**
+* Initializes a new instance of {@link Firestore} with the provided settings.
+* Can only be called before any other function, including
+* {@link (getFirestore:1)}. If the custom settings are empty, this function is
+* equivalent to calling {@link (getFirestore:1)}.
+*
+* @param app - The {@link @firebase/app#FirebaseApp} with which the {@link Firestore} instance will
+* be associated.
+* @param settings - A settings object to configure the {@link Firestore} instance.
+* @param databaseId - The name of the database.
+* @returns A newly initialized {@link Firestore} instance.
+*/
+function initializeFirestore(app, settings, databaseId) {
+	if (!databaseId) databaseId = DEFAULT_DATABASE_NAME;
+	const provider = _getProvider(app, "firestore");
+	if (provider.isInitialized(databaseId)) {
+		const existingInstance = provider.getImmediate({ identifier: databaseId });
+		if (deepEqual(provider.getOptions(databaseId), settings)) return existingInstance;
+		else throw new FirestoreError(Code.FAILED_PRECONDITION, "initializeFirestore() has already been called with different options. To avoid this error, call initializeFirestore() with the same options as when it was originally called, or call getFirestore() to return the already initialized instance.");
+	}
+	if (settings.cacheSizeBytes !== void 0 && settings.localCache !== void 0) throw new FirestoreError(Code.INVALID_ARGUMENT, "cache and cacheSizeBytes cannot be specified at the same time as cacheSizeBytes willbe deprecated. Instead, specify the cache size in the cache object");
+	if (settings.cacheSizeBytes !== void 0 && settings.cacheSizeBytes !== -1 && settings.cacheSizeBytes < LRU_MINIMUM_CACHE_SIZE_BYTES) throw new FirestoreError(Code.INVALID_ARGUMENT, `cacheSizeBytes must be at least ${LRU_MINIMUM_CACHE_SIZE_BYTES}`);
+	if (settings.host && isCloudWorkstation(settings.host)) pingServer(settings.host);
+	return provider.initialize({
+		options: settings,
+		instanceIdentifier: databaseId
+	});
+}
 function getFirestore(appOrDatabaseId, optionalDatabaseId) {
 	const app = typeof appOrDatabaseId === "object" ? appOrDatabaseId : getApp();
 	const databaseId = typeof appOrDatabaseId === "string" ? appOrDatabaseId : optionalDatabaseId || DEFAULT_DATABASE_NAME;
@@ -74973,4 +75001,4 @@ function getDocs(query) {
 */
 registerFirestore("node");
 //#endregion
-export { Timestamp as a, where as i, orderBy as n, collection as o, query as r, getFirestore as s, getDocs as t };
+export { Timestamp as a, initializeFirestore as c, where as i, orderBy as n, collection as o, query as r, getFirestore as s, getDocs as t };

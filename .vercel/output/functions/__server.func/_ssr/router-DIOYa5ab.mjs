@@ -2,12 +2,12 @@ import { o as __toESM } from "../_runtime.mjs";
 import { i as require_react, n as QueryClientProvider, r as require_jsx_runtime } from "../_libs/react+tanstack__react-query.mjs";
 import { t as LanguageProvider } from "./i18n-CFwNplyK.mjs";
 import { P as useRouter, c as HeadContent, d as createRouter, f as Outlet, g as Link, h as createRootRouteWithContext, m as createFileRoute, p as lazyRouteComponent, s as Scripts } from "../_libs/@tanstack/react-router+[...].mjs";
-import { t as Route$3 } from "./blog._slug-C-vv9aEQ.mjs";
+import { t as Route$3 } from "./blog._slug-CBBhEJkA.mjs";
 import { n as QueryClient } from "../_libs/tanstack__query-core.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/router-CoawmRus.js
+//#region node_modules/.nitro/vite/services/ssr/assets/router-DIOYa5ab.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
-var styles_default = "/assets/styles-Cf_L5iEJ.css";
+var styles_default = "/assets/styles-voupRgIo.css";
 function reportLovableError(error, context = {}) {
 	if (typeof window === "undefined") return;
 	window.__lovableEvents?.captureException?.(error, {
@@ -167,7 +167,7 @@ var Route$1 = createFileRoute("/")({
 	] }),
 	component: lazyRouteComponent($$splitComponentImporter$1, "component")
 });
-var $$splitComponentImporter = () => import("./blog.index-CfY_Q0jr.mjs");
+var $$splitComponentImporter = () => import("./blog.index-zwjYq_qV.mjs");
 var Route = createFileRoute("/blog/")({
 	head: () => ({
 		meta: [

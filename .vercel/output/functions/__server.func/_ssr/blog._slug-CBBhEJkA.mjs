@@ -1,8 +1,8 @@
-import { n as fetchPostBySlug } from "./firebaseService-J1SgrlZc.mjs";
 import { A as notFound, m as createFileRoute, p as lazyRouteComponent } from "../_libs/@tanstack/react-router+[...].mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/blog._slug-C-vv9aEQ.js
+import { n as fetchPostBySlug } from "./firebaseService-DPE6eFgB.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/blog._slug-CBBhEJkA.js
 var $$splitNotFoundComponentImporter = () => import("./blog._slug-Cj08Bj7o.mjs");
-var $$splitComponentImporter = () => import("./blog._slug-BT8Hqjjg.mjs");
+var $$splitComponentImporter = () => import("./blog._slug-DO0qhGNU.mjs");
 var Route = createFileRoute("/blog/$slug")({
 	loader: async ({ params }) => {
 		const post = await fetchPostBySlug(params.slug);
@@ -15,20 +15,21 @@ var Route = createFileRoute("/blog/$slug")({
 			content: "noindex"
 		}] };
 		const { post } = loaderData;
+		const lang = typeof window !== "undefined" && localStorage.getItem("alaswani_lang") || "ar";
 		return {
 			meta: [
-				{ title: `${post.title} · ALASWANI Blog` },
+				{ title: `${post.title[lang] || post.title.en} · ALASWANI Blog` },
 				{
 					name: "description",
-					content: post.excerpt
+					content: post.excerpt[lang] || post.excerpt.en
 				},
 				{
 					property: "og:title",
-					content: post.title
+					content: post.title[lang] || post.title.en
 				},
 				{
 					property: "og:description",
-					content: post.excerpt
+					content: post.excerpt[lang] || post.excerpt.en
 				},
 				{
 					property: "og:type",
@@ -48,7 +49,7 @@ var Route = createFileRoute("/blog/$slug")({
 				},
 				{
 					property: "article:section",
-					content: post.category
+					content: post.category[lang] || post.category.en
 				}
 			],
 			links: [{
@@ -60,14 +61,14 @@ var Route = createFileRoute("/blog/$slug")({
 				children: JSON.stringify({
 					"@context": "https://schema.org",
 					"@type": "Article",
-					headline: post.title,
-					description: post.excerpt,
+					headline: post.title[lang] || post.title.en,
+					description: post.excerpt[lang] || post.excerpt.en,
 					datePublished: post.publishedAt,
 					author: {
 						"@type": "Person",
 						name: post.author
 					},
-					articleSection: post.category
+					articleSection: post.category[lang] || post.category.en
 				})
 			}]
 		};

@@ -2038,6 +2038,13 @@ function getApp(name = DEFAULT_ENTRY_NAME) {
 	return app;
 }
 /**
+* A (read-only) array of all initialized apps.
+* @public
+*/
+function getApps() {
+	return Array.from(_apps.values());
+}
+/**
 * Registers a library's name and version for platform logging purposes.
 * @param library - Name of 1p or 3p library (e.g. firestore, angularfire)
 * @param version - Current version of that library.
@@ -2356,4 +2363,4 @@ function registerCoreComponents(variant) {
 */
 registerCoreComponents("");
 //#endregion
-export { isCloudWorkstation as _, getApp as a, globalthis_default as b, LogLevel as c, FirebaseError as d, createMockUserToken as f, getUA as g, getModularInstance as h, _registerComponent as i, Logger as l, getDefaultEmulatorHostnameAndPort as m, _getProvider as n, initializeApp as o, deepEqual as p, _isFirebaseServerApp as r, registerVersion as s, SDK_VERSION as t, Component as u, isSafari as v, init_globalthis as x, pingServer as y };
+export { init_globalthis as S, getUA as _, getApp as a, pingServer as b, registerVersion as c, Component as d, FirebaseError as f, getModularInstance as g, getDefaultEmulatorHostnameAndPort as h, _registerComponent as i, LogLevel as l, deepEqual as m, _getProvider as n, getApps as o, createMockUserToken as p, _isFirebaseServerApp as r, initializeApp as s, SDK_VERSION as t, Logger as u, isCloudWorkstation as v, globalthis_default as x, isSafari as y };

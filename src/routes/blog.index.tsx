@@ -35,6 +35,10 @@ function BlogIndex() {
   const { data: posts, isLoading, isError } = useQuery({
     queryKey: ["posts"],
     queryFn: fetchAllPosts,
+    // PREVENT PRODUCTION RACE CONDITIONS:
+    // Only run query if window is defined and we are on the client
+    // In actual usage, db is guaranteed by our singleton, but we wait for client-side mounting
+    enabled: typeof window !== "undefined",
   });
 
   return (

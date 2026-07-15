@@ -62,8 +62,19 @@ export async function fetchAllPosts(): Promise<Post[]> {
     lastFetchTime = now;
     
     return posts;
-  } catch (error) {
-    console.error("Error fetching posts:", error);
+  } catch (error: any) {
+    // FAIL-SAFE VERBOSE PRODUCTION LOGGING
+    console.error("FIREBASE FATAL ERROR (fetchAllPosts):", {
+      name: error?.name,
+      code: error?.code,
+      message: error?.message,
+    });
+    
+    // Force a highly visible global alert if in the browser (bypasses Vite stripping)
+    if (typeof window !== "undefined") {
+      alert(`FIREBASE CRITICAL ERROR!\nName: ${error?.name}\nCode: ${error?.code}\nMessage: ${error?.message}`);
+    }
+
     throw new Error("Failed to fetch posts from database");
   }
 }
@@ -97,8 +108,19 @@ export async function fetchPostBySlug(slug: string): Promise<Post | null> {
       publishedAt: data.publishedAt instanceof Timestamp ? data.publishedAt.toDate().toISOString() : data.publishedAt,
       thumbnailUrl: data.thumbnailUrl || "",
     } as Post;
-  } catch (error) {
-    console.error("Error fetching post by slug:", error);
+  } catch (error: any) {
+    // FAIL-SAFE VERBOSE PRODUCTION LOGGING
+    console.error("FIREBASE FATAL ERROR (fetchPostBySlug):", {
+      name: error?.name,
+      code: error?.code,
+      message: error?.message,
+    });
+    
+    // Force a highly visible global alert if in the browser (bypasses Vite stripping)
+    if (typeof window !== "undefined") {
+      alert(`FIREBASE CRITICAL ERROR!\nName: ${error?.name}\nCode: ${error?.code}\nMessage: ${error?.message}`);
+    }
+
     throw new Error("Failed to fetch post from database");
   }
 }

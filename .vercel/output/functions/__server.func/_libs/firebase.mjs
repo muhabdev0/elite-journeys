@@ -1,4 +1,4 @@
-import { s as registerVersion } from "./@firebase/app+[...].mjs";
+import { c as registerVersion } from "./@firebase/app+[...].mjs";
 import "./@firebase/firestore+[...].mjs";
 //#region node_modules/firebase/app/dist/index.mjs
 /**

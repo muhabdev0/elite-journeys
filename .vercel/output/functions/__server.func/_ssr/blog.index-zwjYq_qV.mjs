@@ -1,11 +1,11 @@
 import { r as require_jsx_runtime, t as useQuery } from "../_libs/react+tanstack__react-query.mjs";
 import { n as useLang } from "./i18n-CFwNplyK.mjs";
-import { t as fetchAllPosts } from "./firebaseService-J1SgrlZc.mjs";
 import { g as Link } from "../_libs/@tanstack/react-router+[...].mjs";
 import { _ as CalendarDays, b as UserRound, v as ArrowRight, y as ArrowLeft } from "../_libs/lucide-react.mjs";
 import { n as Header, t as Footer } from "./Footer-BN93anMo.mjs";
+import { t as fetchAllPosts } from "./firebaseService-DPE6eFgB.mjs";
 import { t as WhatsAppFloat } from "./WhatsAppFloat-CKf5aLqo.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/blog.index-CfY_Q0jr.js
+//#region node_modules/.nitro/vite/services/ssr/assets/blog.index-zwjYq_qV.js
 var import_jsx_runtime = require_jsx_runtime();
 function BlogCard({ post }) {
 	const { lang, t } = useLang();
@@ -21,15 +21,15 @@ function BlogCard({ post }) {
 			to: "/blog/$slug",
 			params: { slug: post.slug },
 			className: "relative block aspect-video overflow-hidden",
-			"aria-label": post.title,
+			"aria-label": post.title[lang],
 			children: [post.thumbnailUrl ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
 				src: post.thumbnailUrl,
-				alt: post.title,
+				alt: post.title[lang],
 				loading: "lazy",
 				className: "h-full w-full object-cover transition duration-700 group-hover:scale-105"
-			}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "h-full w-full bg-secondary/50" }), post.category && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+			}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "h-full w-full bg-secondary/50" }), post.category?.[lang] && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 				className: "absolute top-4 start-4 rounded-full bg-gradient-gold px-3 py-1 text-[11px] font-semibold text-navy shadow-gold/40",
-				children: post.category
+				children: post.category[lang]
 			})]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 			className: "flex flex-1 flex-col p-6",
@@ -53,12 +53,12 @@ function BlogCard({ post }) {
 						to: "/blog/$slug",
 						params: { slug: post.slug },
 						className: "transition hover:text-primary",
-						children: post.title
+						children: post.title[lang]
 					})
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 					className: "mt-3 line-clamp-3 flex-1 text-sm leading-relaxed text-muted-foreground",
-					children: post.excerpt
+					children: post.excerpt[lang]
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 					className: "mt-6",
@@ -102,10 +102,11 @@ function BlogCardSkeleton() {
 	});
 }
 function BlogIndex() {
-	const { t } = useLang();
+	const { lang, t } = useLang();
 	const { data: posts, isLoading, isError } = useQuery({
 		queryKey: ["posts"],
-		queryFn: fetchAllPosts
+		queryFn: fetchAllPosts,
+		enabled: typeof window !== "undefined"
 	});
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "min-h-screen bg-background",
