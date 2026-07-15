@@ -1,9 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { WhatsAppFloat } from "@/components/site/WhatsAppFloat";
-import { BlogCard } from "@/components/site/BlogCard";
-import { posts } from "@/lib/blog-data";
+import { BlogCard, BlogCardSkeleton } from "@/components/site/BlogCard";
+import { fetchAllPosts } from "@/lib/firebaseService";
 import { useLang } from "@/lib/i18n";
 
 export const Route = createFileRoute("/blog/")({
@@ -29,7 +30,13 @@ export const Route = createFileRoute("/blog/")({
 });
 
 function BlogIndex() {
-  const { t } = useLang();
+  const { lang, t } = useLang();
+  
+  const { data: posts, isLoading, isError } = useQuery({
+    queryKey: ["posts"],
+    queryFn: fetchAllPosts,
+  });
+
   return (
     <div className="min-h-screen bg-background">
       <Header solid />
@@ -52,9 +59,24 @@ function BlogIndex() {
         <section className="bg-background py-16 md:py-24">
           <div className="mx-auto max-w-7xl px-5 md:px-8">
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-              {posts.map((post) => (
-                <BlogCard key={post.slug} post={post} />
-              ))}
+              {isLoading ? (
+                Array.from({ length: 6 }).map((_, i) => (
+                  <BlogCardSkeleton key={i} />
+                ))
+              ) : isError ? (
+                <div className="col-span-full rounded-2xl bg-destructive/10 p-8 text-center text-destructive">
+                  <p className="font-semibold">Failed to load blog posts.</p>
+                  <p className="text-sm">Please try again later.</p>
+                </div>
+              ) : posts?.length === 0 ? (
+                <div className="col-span-full py-12 text-center text-muted-foreground">
+                  <p>No posts found.</p>
+                </div>
+              ) : (
+                posts?.map((post) => (
+                  <BlogCard key={post.slug} post={post} />
+                ))
+              )}
             </div>
           </div>
         </section>
